@@ -27,9 +27,12 @@ for f in farms:
     n_trips = math.ceil(f["tons"] / TRUCK_CAPACITY_TONS)
     for _ in range(n_trips):
         trips_queue.append(f)
-
+def trip_score(farm):
+    distance = farm["distance"]
+    tons = farm["tons"]
+    return 0.7 * distance + 0.1 * tons  # Beispiel
 # STRATEGIE: ITS = zuerst nähere Höfe
-trips_queue.sort(key=lambda x: x["distance"])   # einfache Optimierung
+trips_queue.sort(key=trip_score)   # einfache Optimierung
 
 print("NEEDED FARMS:", len(trips_queue))
 
@@ -60,7 +63,8 @@ ax.hlines(0, 0, max_dist, linestyle="--")
 ax.set_xlim(-1, max_dist + 1)
 ax.set_ylim(-1, NUM_TRUCKS)
 ax.set_yticks([])
-
+ax.vlines(0, -0.2, NUM_TRUCKS - 0.5, linestyle=":")
+ax.text(0, NUM_TRUCKS - 0.3, "mill", ha="center", fontsize=8)
 # Höfe markieren
 for f in farms:
     ax.vlines(f["distance"], -0.2, NUM_TRUCKS - 0.5, linestyle=":")
@@ -136,7 +140,7 @@ def update(frame):
         truck_markers[i].set_data([truck["x"]], [i])
 
     # Text aktualisieren
-    time_text.set_text(f"Schritt: {step_counter}")
+    time_text.set_text(f"step: {step_counter}")
 
     return truck_markers + [time_text]
 
