@@ -1,3 +1,6 @@
+
+#NOTE: 75% ai generated code for speed purposes
+
 import math
 import random
 import numpy as np
